@@ -1,0 +1,10 @@
+Return ONLY JSON:
+
+{
+  "category": "User/Network/System",
+  "confidence": "0-1",
+  "reason": "short explanation"
+}
+
+Event:
+{input}

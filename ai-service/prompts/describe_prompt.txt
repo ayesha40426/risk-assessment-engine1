@@ -1,15 +1,10 @@
-You are a cybersecurity expert.
-
-Analyze the event and return ONLY valid JSON.
-
-Do NOT include markdown or backticks.
-
-Format:
+Return ONLY JSON:
 
 {
   "risk_level": "Low/Medium/High",
-  "reason": "short explanation",
-  "impact": "business impact"
+  "confidence": "0-1",
+  "reason": "...",
+  "impact": "..."
 }
 
 Event:

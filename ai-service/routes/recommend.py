@@ -1,36 +1,38 @@
 from flask import Blueprint, request, jsonify
-from services.groq_client import call_groq
-import json
+from services.recommend_service import build_prompt
+from services.ai_engine import analyze_risk
 
 recommend_bp = Blueprint("recommend", __name__)
 
-def load_prompt(text):
-    with open("ai-service/prompts/recommend_prompt.txt") as f:
-        return f.read().replace("{input}", text)
-
-def clean_response(text):
-    # Remove markdown formatting
-    text = text.replace("```json", "").replace("```", "").strip()
-    return text
-
 @recommend_bp.route("/recommend", methods=["POST"])
 def recommend():
-    data = request.json
-    text = data.get("text")
-
-    if not text:
-        return jsonify({"error": "No input provided"}), 400
-
-    prompt = load_prompt(text)
-    result = call_groq(prompt)
-
-    cleaned = clean_response(result)
-
     try:
-        parsed = json.loads(cleaned)
-    except:
-        parsed = {"raw": cleaned}
+        data = request.get_json()
 
-    return jsonify({
-        "recommendations": parsed
-    })
+        if not data or "text" not in data:
+            return jsonify({"error": "Missing 'text' field"}), 400
+
+        text = data["text"].strip()
+
+        if text == "":
+            return jsonify({"error": "Empty input not allowed"}), 400
+
+        # Build prompt
+        prompt = build_prompt(text)
+
+        # AI logic
+        risk = analyze_risk(text)
+
+        return jsonify({
+            "status": "success",
+            "input": text,
+            "risk_level": risk,
+            "prompt": prompt,
+            "message": "Analysis completed successfully"
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            "error": "Internal server error",
+            "details": str(e)
+        }), 500

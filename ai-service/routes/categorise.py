@@ -3,17 +3,17 @@ from services.groq_client import call_groq
 import json
 from datetime import datetime
 
-describe_bp = Blueprint("describe", __name__)
+categorise_bp = Blueprint("categorise", __name__)
 
 def clean(text):
     return text.replace("```json", "").replace("```", "").strip()
 
 def load_prompt(text):
-    with open("ai-service/prompts/describe_prompt.txt") as f:
+    with open("ai-service/prompts/categorise_prompt.txt") as f:
         return f.read().replace("{input}", text)
 
-@describe_bp.route("/describe", methods=["POST"])
-def describe():
+@categorise_bp.route("/categorise", methods=["POST"])
+def categorise():
     # ✅ Input validation
     if not request.json or "text" not in request.json:
         return jsonify({"error": "Invalid input. 'text' field is required"}), 400

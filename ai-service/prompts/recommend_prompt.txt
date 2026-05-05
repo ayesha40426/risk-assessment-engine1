@@ -1,18 +1,6 @@
-You are a cybersecurity expert.
+Analyze the following system input and provide a risk assessment.
 
-Provide exactly 3 actionable recommendations.
-
-Return ONLY valid JSON.
-Do NOT include markdown or backticks.
-
-Format:
-
-[
-  {
-    "action": "clear action",
-    "priority": "High/Medium/Low"
-  }
-]
-
-Event:
+Input:
 {input}
+
+Return insights about potential risks and anomalies.
