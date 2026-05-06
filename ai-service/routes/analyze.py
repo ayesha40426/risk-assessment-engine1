@@ -11,7 +11,7 @@ def clean(text):
     return text.replace("```json", "").replace("```", "").strip()
 
 def load_prompt(text):
-    with open("ai-service/prompts/analyze_prompt.txt") as f:
+    with open("prompts/analyze_prompt.txt") as f:
         return f.read().replace("{input}", text)
 
 @analyze_bp.route("/analyze", methods=["POST"])

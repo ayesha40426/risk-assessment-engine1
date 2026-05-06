@@ -9,7 +9,7 @@ def clean(text):
     return text.replace("```json", "").replace("```", "").strip()
 
 def load_prompt(text):
-    with open("ai-service/prompts/describe_prompt.txt") as f:
+    with open("prompts/describe_prompt.txt") as f:
         return f.read().replace("{input}", text)
 
 @describe_bp.route("/describe", methods=["POST"])

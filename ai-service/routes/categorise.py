@@ -9,7 +9,7 @@ def clean(text):
     return text.replace("```json", "").replace("```", "").strip()
 
 def load_prompt(text):
-    with open("ai-service/prompts/categorise_prompt.txt") as f:
+    with open("prompts/categorise_prompt.txt") as f:
         return f.read().replace("{input}", text)
 
 @categorise_bp.route("/categorise", methods=["POST"])
