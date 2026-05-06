@@ -1,19 +1,21 @@
 from flask import Blueprint, request, jsonify
 from services.groq_client import call_groq
+from services.scoring_service import get_risk_score
+from utils.formatter import format_response
 import json
 from datetime import datetime
 
-categorise_bp = Blueprint("categorise", __name__)
+analyze_bp = Blueprint("analyze", __name__)
 
 def clean(text):
     return text.replace("```json", "").replace("```", "").strip()
 
 def load_prompt(text):
-    with open("ai-service/prompts/categorise_prompt.txt") as f:
+    with open("ai-service/prompts/analyze_prompt.txt") as f:
         return f.read().replace("{input}", text)
 
-@categorise_bp.route("/categorise", methods=["POST"])
-def categorise():
+@analyze_bp.route("/analyze", methods=["POST"])
+def analyze():
     # ✅ Input validation
     if not request.json or "text" not in request.json:
         return jsonify({
@@ -22,7 +24,7 @@ def categorise():
 
     text = request.json.get("text")
 
-    # ✅ Day 15: Empty input validation
+    # ✅ Empty input check
     if not text.strip():
         return jsonify({
             "error": "Input text cannot be empty"
@@ -41,9 +43,15 @@ def categorise():
                 "raw": result
             }), 500
 
+        # ✅ Day 12: Add risk score
+        parsed["risk_score"] = get_risk_score(parsed.get("risk_level"))
+
+        # ✅ Day 13: Format response
+        formatted = format_response(parsed)
+
         return jsonify({
             "status": "success",
-            "data": parsed,
+            "data": formatted,
             "generated_at": str(datetime.now())
         })
 

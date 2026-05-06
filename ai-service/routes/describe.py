@@ -16,9 +16,17 @@ def load_prompt(text):
 def describe():
     # ✅ Input validation
     if not request.json or "text" not in request.json:
-        return jsonify({"error": "Invalid input. 'text' field is required"}), 400
+        return jsonify({
+            "error": "Invalid input. 'text' field is required"
+        }), 400
 
     text = request.json.get("text")
+
+    # ✅ Day 15: Empty input validation
+    if not text.strip():
+        return jsonify({
+            "error": "Input text cannot be empty"
+        }), 400
 
     try:
         prompt = load_prompt(text)

@@ -9,13 +9,15 @@ def recommend():
     try:
         data = request.get_json()
 
+        # ✅ Input validation
         if not data or "text" not in data:
             return jsonify({"error": "Missing 'text' field"}), 400
 
-        text = data["text"].strip()
+        text = data["text"]
 
-        if text == "":
-            return jsonify({"error": "Empty input not allowed"}), 400
+        # ✅ Day 15: Empty input validation
+        if not text.strip():
+            return jsonify({"error": "Input text cannot be empty"}), 400
 
         # Build prompt
         prompt = build_prompt(text)
