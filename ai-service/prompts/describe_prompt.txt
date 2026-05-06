@@ -1,7 +1,7 @@
 Return ONLY JSON:
 
 {
-  "risk_level": "Low/Medium/High",
+  "risk_level": "LOW/MEDIUM/HIGH",
   "confidence": "0-1",
   "reason": "...",
   "impact": "..."

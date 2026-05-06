@@ -34,6 +34,13 @@ def describe():
 
         try:
             parsed = json.loads(clean(result))
+            
+            try:
+                parsed["confidence"] = float(parsed.get("confidence", 0))
+                
+            except:
+                parsed["confidence"] = 0.0
+       
         except Exception:
             return jsonify({
                 "error": "AI response parsing failed",
