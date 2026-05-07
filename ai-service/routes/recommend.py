@@ -29,7 +29,6 @@ def recommend():
             "status": "success",
             "input": text,
             "risk_level": risk,
-            "prompt": prompt,
             "message": "Analysis completed successfully"
         }), 200
 
